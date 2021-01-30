@@ -65,7 +65,7 @@ for file in [file for file in os.listdir(d) if not file in [".", ".."]]:
         fp.write('            characters[%s] /*%s %s*/ = new[] {\n' % (int(m.group(1), 16), num, m.group(1)))
         for ch in data:
             if ch == None:
-                continue
+                ch = "[?]"
             fp.write('"%s" /*%s*/%s ' % (
                 formatch(ch, num + c),
                 ("%x" % (num + c)).rjust(4, '0'),
