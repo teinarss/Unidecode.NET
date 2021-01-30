@@ -35,11 +35,11 @@ namespace Unidecode.NET
 {
     public static partial class Unidecoder
     {
-        private static readonly Dictionary<int, string[]> characters;
+        private static readonly string[][] characters;
 
         static Unidecoder()
         {
-            characters = new Dictionary<int, string[]> {
+            characters = new string[503][];
 ''')
 
 
@@ -62,17 +62,19 @@ for file in [file for file in os.listdir(d) if not file in [".", ".."]]:
         assert len(data) == 256
         c = 0
         num = int(m.group(1), 16) * 256
-        fp.write('                {%s /*%s %s*/, new[]{\n' % (int(m.group(1), 16), num, m.group(1)))
+        fp.write('            characters[%s] /*%s %s*/ = new[] {\n' % (int(m.group(1), 16), num, m.group(1)))
         for ch in data:
+            if ch == None:
+                continue
             fp.write('"%s" /*%s*/%s ' % (
                 formatch(ch, num + c),
                 ("%x" % (num + c)).rjust(4, '0'),
                 "," if c < 255 else ""))
             c = c + 1
-        fp.write('}},\n\n')
+        fp.write('};\n\n')
 
 fp.write(
-    '''            };
+    '''
             }
         }
     }
